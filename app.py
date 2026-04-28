@@ -17,4 +17,11 @@ def add_product():
 
 if __name__=="__main__":
   app.run(debug=True)
-  
+
+@app.route("/products", methods=["GET"])
+def get_products():
+  produits=[
+    {"nom": "yaourt", "date_peremption": "2026-04-30"},
+    {"nom": "lait", "date_peremption": "2026-04-25"},
+  ]
+  return jsonify(produits)
