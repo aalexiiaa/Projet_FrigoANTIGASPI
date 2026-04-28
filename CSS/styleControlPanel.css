@@ -1,0 +1,81 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f7f1f1;
+}
+
+.structure {
+  display: flex;
+  height: 100vh;
+}
+
+.contenuPrincipal {
+  text-align: center;
+  margin: 40px 5cm;
+}
+
+/*navbar*/
+.navBar {
+  background-color: #ffffff;
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 3px 7px rgba(11, 11, 11, 0.08);
+}
+
+.iconLogout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  font-size: 13px;
+  color: black;
+}
+.iconLogout img {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 3px;
+  object-fit: contain;
+}
+
+.contenu {
+  padding: 40px;
+  display: grid;
+  gap: 25px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.pr,
+.economies {
+  padding: 200px;
+  padding: 26px;
+  color: white;
+  box-shadow: 0px 5px 15px rgba(11, 11, 11, 0.08);
+}
+
+.Green {
+  background-color: #32cd32;
+}
+.Red {
+  background-color: #dc143c;
+}
+.Orange {
+  background-color: #ffa500;
+}
+.economies {
+  background-color: #1e90ff;
+}
+
+.textblock {
+  display: inline-block;
+  width: 40%;
+  margin: 15px;
+  padding: 20px;
+  background-color: #f5f5dc;
+  border: 1px solid #ccc;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
