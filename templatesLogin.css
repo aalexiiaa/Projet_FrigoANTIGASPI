@@ -1,0 +1,88 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(231, 231, 231);
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  display: flex;
+}
+
+.formulaire-login {
+  background-color: white;
+  padding: 40px;
+  width: 400px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+h1 {
+  color: rgb(40, 188, 40);
+  margin-bottom: 15px;
+}
+
+hr {
+  margin-bottom: 25px;
+  border: 2px solid rgb(231, 231, 231);
+}
+
+label {
+  display: block;
+  text-align: left;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+input {
+  display: block;
+  text-align: left;
+  margin-top: 5px;
+  margin-bottom: 7px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  padding: 9px;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 8px;
+  background-color: rgb(40, 188, 40);
+  color: white;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgb(28, 77, 31);
+}
+
+.errorMessage {
+  color: red;
+  margin-top: 10px;
+  display: none;
+}
+
+/*Logo*/
+.logo {
+  width: 60px;
+}
+.divLogo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.WelcomeMessage {
+  color: #7f9091;
+  margin-bottom: 25px;
+  font-size: 15px;
+}
+
+footer {
+  position: absolute;
+  bottom: 5px;
+  font-size: 12px;
+  color: #7f8c8d;
+}
