@@ -55,13 +55,14 @@
           return;
         }
 
-        fetch("http://localhost:5000/products", {
+        fetch("http://localhost:5000/api/produits", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
             nom: nom,
+            quantite:1,
             date_peremption: date
           })
         })
