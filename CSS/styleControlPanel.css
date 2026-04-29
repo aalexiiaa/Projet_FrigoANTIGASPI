@@ -68,11 +68,8 @@ body {
 
 .contenuPrincipal {
   text-align: center;
-  margin: 40px 5cm;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 boxes per row */
-  gap: 30px;
-  align-items: stretch; /* for same heigjhts */
+  margin: 40px auto;
+  width: 65%;
 }
 
 .textblock {
@@ -90,9 +87,16 @@ body {
 }
 
 .product {
-  padding: 15px;
-  margin: 10px;
-  border-radius: 10px;
+  padding: 17px;
+  border-radius: 14px;
   color: white;
   font-weight: bold;
+  text-align: center;
+}
+
+#listeProduits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 31px;
 }
