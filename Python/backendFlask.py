@@ -75,7 +75,7 @@ def get_products():
             "id":              p.id,
             "nom":             p.nom,
             "quantite":        p.quantite,
-            "date_expiration": p.date_expiration.strftime("%Y-%m-%d")
+            "date_peremption": p.date_expiration.strftime("%Y-%m-%d")
         }
         analyser_produit(produit_dict)
         resultat.append(produit_dict)
