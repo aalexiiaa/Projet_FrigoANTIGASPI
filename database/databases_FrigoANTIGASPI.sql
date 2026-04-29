@@ -9,14 +9,14 @@ CREATE TABLE produits(
 	id SERIAL PRIMARY KEY,
 	nom VARCHAR(100),
 	quantite INTEGER,
-	date_expiration DATE
+	date_peremption DATE
 );
 CREATE TABLE historique_produits(
 	id SERIAL PRIMARY KEY,
 	produit_id INTEGER REFERENCES produits(id) ON DELETE SET NULL,
 	nom VARCHAR(100),
 	quantite INTEGER,
-	date_expiration DATE,
+	date_peremption DATE,
 	consomme_le DATE DEFAULT CURRENT_DATE,
 	co2_economise_kg FLOAT
 );
