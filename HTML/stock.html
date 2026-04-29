@@ -28,9 +28,45 @@
       <hr>
     </header>
     
-    <div class="formulaire-login">
+    <div class="contenuPrincipal">
       <h1>Stock</h1>
+
+      <div id="listeProduits"></div>
     </div>
+
+    <script>
+      function chProduit(){
+        fetch("http://localhost:5000/api/produits")
+        .then(res=>res.json())
+        .then(produits=>{
+          const container=document.getElementById("listeProduits");
+          container.innerHTML="";
+          produits.forEach(p=>{
+            const div=document.createElement("div");
+
+            //couleurs
+            if (p.statut==="rouge") div.className="product Red";
+            else if (p.statut==="jaune") div.className="product Orange";
+            else div.className="product Green";
+
+            div.innerHTML=`
+              <h3>${p.nom}</h3>
+              <p>${p.jours_restants} jours restants </p>
+              <p>Expiration: ${p.date_expiration}</p>
+            `;
+            container.appendChild(div);
+          })
+        })
+        .catch(err=>{
+          console.error(err);
+          alert("Erreur dans le chargement des produits");
+        })
+      }
+      chProduit();
+    </script>
+
+
+
     <footer style="text-align: center;">
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
