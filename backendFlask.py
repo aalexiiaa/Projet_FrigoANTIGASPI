@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Config de la base de données et du JWT (a adapter selon configuration locale)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:TON_MOT_DE_PASSE@localhost:5432/ecofrigo"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["JWT_SECRET_KEY"] = "cle-secrete-frigo"
 
