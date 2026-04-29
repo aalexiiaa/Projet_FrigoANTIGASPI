@@ -70,16 +70,16 @@ def get_products():
     produits = Produit.query.all()
 
     resultat = []
-for p in produits:
-    produit_dict = {
-        "id":              p.id,
-        "nom":             p.nom,
-        "quantite":        p.quantite,
-        "date_expiration": p.date_expiration.strftime("%Y-%m-%d")
-    }
-    analyser_produit(produit_dict)
-    resultat.append(produit_dict)
-resultat = trier_par_priorite(resultat)
+    for p in produits:
+        produit_dict = {
+            "id":              p.id,
+            "nom":             p.nom,
+            "quantite":        p.quantite,
+            "date_peremption": p.date_expiration.strftime("%Y-%m-%d")
+        }
+        analyser_produit(produit_dict)
+        resultat.append(produit_dict)
+    resultat = trier_par_priorite(resultat)
     return jsonify(resultat), 200
 
 
