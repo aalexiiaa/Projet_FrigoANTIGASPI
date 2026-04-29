@@ -172,3 +172,18 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()   # crée les tables si elles n'existent pas encore
     app.run(debug=True, port=5000)
+
+
+
+@app.route("api/auth/register", methods=["POST"])
+def register():
+    data=request.json
+    user=User(
+        nom=data["nom"]
+        email=data["email"]
+        mot_de_passe=data["mot_de_passe"],
+        role="admin"
+    )
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({"message":"Le compte a été crée"}), 201
