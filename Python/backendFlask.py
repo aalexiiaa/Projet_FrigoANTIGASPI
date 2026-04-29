@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flask_cors import CORS
 from datetime import datetime, date
 from co2_stats import calculer_co2_economise, construire_stats_depuis_historique, generer_rapport_mensuel
+from priorite import analyser_produit, trier_par_priorite, a_consommer_aujourd_hui
 
 app = Flask(__name__)
 CORS(app)
@@ -45,18 +46,6 @@ class HistoriqueProduit(db.Model):
     consomme_le        = db.Column(db.Date, default=date.today)
     co2_economise_kg   = db.Column(db.Float)
 
-# Fonction utilitaire : calcul du statut d'un produit 
-
-def get_statut(date_exp):
-    jours = (date_exp - date.today()).days
-    if jours <= 0:
-        statut = "rouge"   # expiré
-    elif jours <= 3:
-        statut = "jaune"   # à consommer vite
-    else:
-        statut = "vert"    # ok
-    return jours, statut
-
 
 # Routes de l'API REST 
 
@@ -81,20 +70,16 @@ def get_products():
     produits = Produit.query.all()
 
     resultat = []
-    for p in produits:
-        jours, statut = get_statut(p.date_expiration)
-        resultat.append({
-            "id":              p.id,
-            "nom":             p.nom,
-            "quantite":        p.quantite,
-            "date_expiration": p.date_expiration.strftime("%Y-%m-%d"),
-            "jours_restants":  jours,
-            "statut":          statut
-        })
-
-    # tri : le plus urgent en premier
-    resultat.sort(key=lambda p: p["jours_restants"])
-
+for p in produits:
+    produit_dict = {
+        "id":              p.id,
+        "nom":             p.nom,
+        "quantite":        p.quantite,
+        "date_expiration": p.date_expiration.strftime("%Y-%m-%d")
+    }
+    analyser_produit(produit_dict)
+    resultat.append(produit_dict)
+resultat = trier_par_priorite(resultat)
     return jsonify(resultat), 200
 
 
