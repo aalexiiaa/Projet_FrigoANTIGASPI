@@ -146,12 +146,38 @@ def delete_product(id):
 # Stats CO2 : combien de produits ont été sauvés du gaspillage et combien de CO2 cela représente
 @app.route("/api/co2/stats", methods=["GET"])
 def co2_stats():
-    total = HistoriqueProduit.query.count()
-    co2   = total * 2.5   # estimation : 2,5 kg de CO2 par produit sauvé
+    historique = HistoriqueProduit.query.order_by(HistoriqueProduit.consomme_le.asc()).all()
+    stats = construire_stats_depuis_historique(historique)
+    return jsonify(stats), 200
+
+
+@app.route("/api/co2/historique", methods=["GET"])
+def co2_historique():
+    historique = HistoriqueProduit.query.order_by(HistoriqueProduit.consomme_le.desc()).all()
+
+    resultat = []
+    for h in historique:
+        resultat.append({
+            "id": h.id,
+            "nom": h.nom,
+            "quantite": h.quantite,
+            "date_expiration": h.date_expiration.strftime("%Y-%m-%d") if h.date_expiration else None,
+            "consomme_le": h.consomme_le.strftime("%Y-%m-%d") if h.consomme_le else None,
+            "co2_economise_kg": h.co2_economise_kg
+        })
+
+    return jsonify(resultat), 200
+
+
+@app.route("/api/co2/rapport-mensuel", methods=["GET"])
+def co2_rapport_mensuel():
+    mois = request.args.get("mois")
+    historique = HistoriqueProduit.query.all()
+    rapport = generer_rapport_mensuel(historique, mois)
 
     return jsonify({
-        "produits_sauves":  total,
-        "co2_economise_kg": co2
+        "mois": mois,
+        "rapport": rapport
     }), 200
 
 
