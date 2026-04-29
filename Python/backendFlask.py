@@ -75,7 +75,7 @@ def get_products():
             "id":              p.id,
             "nom":             p.nom,
             "quantite":        p.quantite,
-            "date_expiration": p.date_expiration.strftime("%Y-%m-%d")
+            "date_peremption": p.date_expiration.strftime("%Y-%m-%d")
         }
         analyser_produit(produit_dict)
         resultat.append(produit_dict)
@@ -85,12 +85,12 @@ def get_products():
 
 # Ajouter un produit 
 @app.route("/api/produits", methods=["POST"])
-@jwt_required()
+#@jwt_required()
 def add_product():
     data = request.json
 
     # conversion de la date texte → objet date Python
-    exp_date = datetime.strptime(data["date_expiration"], "%Y-%m-%d").date()
+    exp_date = datetime.strptime(data["date_peremption"], "%Y-%m-%d").date()
 
     nouveau_produit = Produit(
         nom=data["nom"],
@@ -166,6 +166,22 @@ def co2_rapport_mensuel():
         "rapport": rapport
     }), 200
 
+@app.route("/api/auth/register", methods=["POST"])
+def register():
+    data=request.json
+    user_existant=User.query.filter_by(email=data["email"]).first()
+    if user_existant:
+        return jsonify({"error": "Ce user existe déja"}), 400
+    user=User(
+        nom=data["nom"],
+        email=data["email"],
+        mot_de_passe=data["mot_de_passe"],
+        role="admin"
+    )
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({"message":"Le compte a été crée"}), 201
+
 
 # Lancement du serveur
 if __name__ == "__main__":
@@ -175,15 +191,4 @@ if __name__ == "__main__":
 
 
 
-@app.route("api/auth/register", methods=["POST"])
-def register():
-    data=request.json
-    user=User(
-        nom=data["nom"]
-        email=data["email"]
-        mot_de_passe=data["mot_de_passe"],
-        role="admin"
-    )
-    db.session.add(user)
-    db.session.commit()
-    return jsonify({"message":"Le compte a été crée"}), 201
+
