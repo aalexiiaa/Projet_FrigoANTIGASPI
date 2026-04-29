@@ -13,7 +13,12 @@ CREATE TABLE produits(
 );
 CREATE TABLE historique_produits(
 	id SERIAL PRIMARY KEY,
-	produit_id INTEGER
+	produit_id INTEGER REFERENCES produits(id) ON DELETE SET NULL,
+	nom VARCHAR(100),
+	quantite INTEGER,
+	date_expiration DATE,
+	consomme_le DATE DEFAULT CURRENT_DATE,
+	co2_economise_kg FLOAT
 );
 
 
