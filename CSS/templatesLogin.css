@@ -5,7 +5,18 @@ body {
   align-items: center;
   height: 100vh;
   display: flex;
+  flex-direction: column;
 }
+
+footer {
+  bottom: 5px;
+  font-size: 12px;
+  color: #7f8c8d;
+  margin-top: auto;
+  text-align: center;
+}
+
+
 .formulaire-login {
   background-color: white;
   padding: 40px;
@@ -13,20 +24,24 @@ body {
   border-radius: 12px;
   text-align: center;
 }
+
 h1 {
   color: rgb(40, 188, 40);
   margin-bottom: 15px;
 }
+
 hr {
   margin-bottom: 25px;
   border: 2px solid rgb(231, 231, 231);
 }
+
 label {
   display: block;
   text-align: left;
   margin-top: 12px;
   font-weight: bold;
 }
+
 input {
   display: block;
   text-align: left;
@@ -38,6 +53,7 @@ input {
   padding: 9px;
   box-sizing: border-box;
 }
+
 button {
   width: 100%;
   padding: 8px;
@@ -46,16 +62,23 @@ button {
   border: none;
   font-size: 15px;
   cursor: pointer;
-  margin-top: 10px;
 }
+
 button:hover {
   background-color: rgb(28, 77, 31);
 }
+
+a {
+  text-decoration: none;
+}
+
 .errorMessage {
   color: red;
   margin-top: 10px;
   display: none;
 }
+
+/*Logo*/
 .logo {
   width: 60px;
 }
@@ -64,14 +87,10 @@ button:hover {
   justify-content: center;
   margin-bottom: 15px;
 }
+
 .WelcomeMessage {
   color: #7f9091;
   margin-bottom: 25px;
   font-size: 15px;
 }
-footer {
-  position: absolute;
-  bottom: 5px;
-  font-size: 12px;
-  color: #7f8c8d;
-}
+
