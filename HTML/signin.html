@@ -8,7 +8,7 @@
   <body>
     <div class="formulaire-login">
       <div class="divLogo">
-        <img src="images/fridge.png" alt="Logo site" class="logo">
+        <img src="images/fridge.png" alt="Logo site" class="logo" />
       </div>
       <h1>Frigo Anti-Gaspi</h1>
       <p class="WelcomeMessage">Créez votre compte</p>
@@ -21,14 +21,47 @@
         <label>Mot de passe</label>
         <input type="password" placeholder="Mot de passe" required /><br />
         <label>Confirmez le mot de passe</label>
-        <input type="password" placeholder="Confirmez votre mot de passe" required/>
-        <br>
+        <input
+          type="password"
+          placeholder="Confirmez votre mot de passe"
+          required
+        />
+        <br />
         <button type="submit">S'inscrire</button>
         <p class="errorMessage">Une erreur est survenue, veuillez réessayer.</p>
       </form>
     </div>
-    <footer >
+    <footer>
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
+
+    <script>
+        function registrationUser(){
+          const donnee=document.querySelectorAll("input");
+          const nom=donnee[0].value;
+          const email=donnee[1].value;
+          const password=donnee[2].value;
+
+          fetch("http://localhost:5000/api/auth/register", {
+            method:"POST",
+            headers: {
+              "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+              nom:nom,
+              email:email,
+              mot_de_passe:password
+            })
+          )
+          .then(()=>{
+            alert("Compte crée!!");
+            window.location.href="login.html";
+          })
+          .catch(err=>{
+            console.error(err);
+            alert("Erreur");
+          });
+      }
+    </script>
   </body>
 </html>
