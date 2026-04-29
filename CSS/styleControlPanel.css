@@ -15,7 +15,7 @@ body {
 
 /*navbar*/
 .navBar {
- background-color: hashtag#ffffff;
+ background-color: #ffffff;
  padding: 15px 25px;
  display: flex;
  justify-content: space-between;
@@ -54,16 +54,16 @@ body {
 }
 
 .Green {
- background-color: hashtag#32cd32;
+ background-color: #32cd32;
 }
 .Red {
- background-color: hashtag#dc143c;
+ background-color: #dc143c;
 }
 .Orange {
- background-color: hashtag#ffa500;
+ background-color: #ffa500;
 }
 .economies {
- background-color: hashtag#1e90ff;
+ background-color: #1e90ff;
 }
 
 .contenuPrincipal {
