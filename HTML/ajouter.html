@@ -22,7 +22,7 @@
                     <button style="padding: 5px 10px; font-size: 16px;" id="f3">Ajouter</button>
                 </a>
                 <a href="login.html" id="b4">
-                    <button style="padding: 5px 10px; font-size: 16px;" id="f4">Logout</button>
+                    <button onclick="logout()" style="padding: 5px 10px; font-size: 16px;" id="f4">Logout</button>
                 </a>
        </div>
        <hr>
@@ -76,9 +76,23 @@
         });
       }
 
-      if (!localStorage.getItem("token")){
-        window.location.href="login.html"
-      }
+      //verifier si log in
+        if(!localStorage.getItem("token")){
+            window.location.href="login.html";
+        }
+
+        //verifier si admin
+        if(localStorage.getItem("role")!=="admin"){
+            alert("Accès permis seulement à l'utilisateur");
+            window.location.href="login.html";
+        }
+
+        //button logout
+        function logout(){
+          localStorage.removeItem("token");
+          localStorage.removeItem("role");
+          window.location.href="login.html";
+        }
     </script>
     
   </body>

@@ -6,53 +6,87 @@
     <link rel="stylesheet" href="../CSS/styleControlPanel.css" />
   </head>
   <body>
-    <header style="background-color: cadetblue;">
-        <hr>
-        <h2 align="center">MOINS DE GASPILLAGE, PLUS DE CONTROLE</h2>
-        <p align="center">Gardez une trace de vos aliments, evitez le gaspillage et agissez pour la planete.</p>
-        
-        <div class="button-container">
-                <a href="accueil.html" id="b1" class="active">
-                    <button style="padding: 5px 10px; font-size: 16px;" id="f1">Accueil</button>
-                </a>
-                <a href="stock.html" id="b2">
-                    <button style="padding: 5px 10px; font-size: 16px;" id="f2">Stock</button>
-                </a>
-                <a href="ajouter.html" id="b3">
-                    <button style="padding: 5px 10px; font-size: 16px;" id="f3">Ajouter</button>
-                </a>
-                <a href="login.html" id="b5">
-                    <button style="padding: 5px 10px; font-size: 16px;" id="f4">Logout</button>
-                </a>
-            </div>
-            <hr>
+    <header style="background-color: cadetblue">
+      <hr />
+      <h2 align="center">MOINS DE GASPILLAGE, PLUS DE CONTROLE</h2>
+      <p align="center">
+        Gardez une trace de vos aliments, evitez le gaspillage et agissez pour
+        la planete.
+      </p>
+
+      <div class="button-container">
+        <a href="accueil.html" id="b1" class="active">
+          <button style="padding: 5px 10px; font-size: 16px" id="f1">
+            Accueil
+          </button>
+        </a>
+        <a href="stock.html" id="b2">
+          <button style="padding: 5px 10px; font-size: 16px" id="f2">
+            Stock
+          </button>
+        </a>
+        <a href="ajouter.html" id="b3">
+          <button style="padding: 5px 10px; font-size: 16px" id="f3">
+            Ajouter
+          </button>
+        </a>
+        <a href="login.html" id="b5">
+          <button
+            onclick="logout()"
+            style="padding: 5px 10px; font-size: 16px"
+            id="f4"
+          >
+            Logout
+          </button>
+        </a>
+      </div>
+      <hr />
     </header>
-    
+
     <div class="contenuPrincipal">
-        <div class="textblock">
-            <h2>Stock</h2>
-            <p>Produits totals: </p>
-            <a href="stock.html">Voir stock -></a>
-        </div>
-        <div class="textblock">
-            <h2>Urgences</h2>
-            <p>Produits a consommer rapidement: </p>
-            <a href="stock.html">Voir stock -></a>
-        </div>
-        <div class="textblock">
-            <h2>Ajouter</h2>
-            <p>Ajouter des nouveaux produits </p>
-            <a href="ajouter.html">Ajouter des produits -></a>
-        </div>
-        <div class="textblock">
-            <h2>CO2</h2>
-            <p>CO2 economise: </p>
-        </div>
+      <div class="textblock">
+        <h2>Stock</h2>
+        <p>Produits totals:</p>
+        <a href="stock.html">Voir stock -></a>
+      </div>
+      <div class="textblock">
+        <h2>Urgences</h2>
+        <p>Produits a consommer rapidement:</p>
+        <a href="stock.html">Voir stock -></a>
+      </div>
+      <div class="textblock">
+        <h2>Ajouter</h2>
+        <p>Ajouter des nouveaux produits</p>
+        <a href="ajouter.html">Ajouter des produits -></a>
+      </div>
+      <div class="textblock">
+        <h2>CO2</h2>
+        <p>CO2 economise:</p>
+      </div>
     </div>
 
-    <footer style="text-align: center;">
+    <footer style="text-align: center">
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
-      
+
+    <script>
+      //verifier si log in
+      if (!localStorage.getItem("token")) {
+        window.location.href = "login.html";
+      }
+
+      //verifier si admin
+      if (localStorage.getItem("role") !== "admin") {
+        alert("Accès permis seulement à l'utilisateur");
+        window.location.href = "login.html";
+      }
+
+      //button logout
+      function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        window.location.href = "login.html";
+      }
+    </script>
   </body>
 </html>
