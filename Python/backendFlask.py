@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flask_cors import CORS
 from datetime import datetime, date
+from co2_stats import calculer_co2_economise, construire_stats_depuis_historique, generer_rapport_mensuel
 
 app = Flask(__name__)
 CORS(app)
