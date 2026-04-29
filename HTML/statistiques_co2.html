@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Statistiques CO2 - Frigo Anti-Gaspi</title>
+    <link rel="stylesheet" href="../CSS/styleControlPanel.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header style="background-color: cadetblue;">
+      <hr>
+      <h2 align="center">MOINS DE GASPILLAGE, PLUS DE CONTROLE</h2>
+      <p align="center">Gardez une trace de vos aliments, evitez le gaspillage et agissez pour la planete.</p>
+
+      <div class="button-container">
+        <a href="accueil.html"><button style="padding: 5px 10px; font-size: 16px;">Accueil</button></a>
+        <a href="stock.html"><button style="padding: 5px 10px; font-size: 16px;">Stock</button></a>
+        <a href="ajouter.html"><button style="padding: 5px 10px; font-size: 16px;">Ajouter</button></a>
+        <a href="statistiques_co2.html"><button style="padding: 5px 10px; font-size: 16px;">Statistiques CO2</button></a>
+        <a href="login.html"><button style="padding: 5px 10px; font-size: 16px;">Logout</button></a>
+      </div>
+      <hr>
+    </header>
+
+    <main class="stats-container">
+      <h1>Module CO2 + Statistiques</h1>
+
+      <section class="stats-cards">
+        <div class="textblock">
+          <h2>Produits sauvés</h2>
+          <p id="produitsSauves">0</p>
+        </div>
+        <div class="textblock">
+          <h2>CO2 économisé</h2>
+          <p><span id="co2Economise">0</span> kg CO2e</p>
+        </div>
+      </section>
+
+      <section class="chart-card">
+        <h2>CO2 économisé par mois</h2>
+        <canvas id="graphiqueMensuel"></canvas>
+      </section>
+
+      <section class="chart-card">
+        <h2>CO2 économisé par produit</h2>
+        <canvas id="graphiqueProduit"></canvas>
+      </section>
+
+      <section class="chart-card">
+        <h2>Rapport mensuel</h2>
+        <label for="moisRapport">Mois du rapport</label>
+        <input id="moisRapport" type="month">
+        <button onclick="chargerRapportMensuel()">Générer le rapport</button>
+        <pre id="rapportMensuel"></pre>
+      </section>
+    </main>
+
+    <footer style="text-align: center;">
+      <p>&copy; Frigo Anti-Gaspi</p>
+    </footer>
+
+    <script>
+      const API_BASE_URL = "http://localhost:5000/api";
+      let graphiqueMensuel = null;
+      let graphiqueProduit = null;
+
+      async function chargerStatistiquesCO2() {
+        const reponse = await fetch(`${API_BASE_URL}/co2/stats`);
+        const stats = await reponse.json();
+
+        document.getElementById("produitsSauves").textContent = stats.produits_sauves;
+        document.getElementById("co2Economise").textContent = stats.co2_economise_kg;
+
+        const labelsMois = stats.par_mois.map(item => item.mois);
+        const donneesMois = stats.par_mois.map(item => item.co2_economise_kg);
+
+        const labelsProduits = stats.par_produit.map(item => item.nom);
+        const donneesProduits = stats.par_produit.map(item => item.co2_economise_kg);
+
+        if (graphiqueMensuel) graphiqueMensuel.destroy();
+        graphiqueMensuel = new Chart(document.getElementById("graphiqueMensuel"), {
+          type: "bar",
+          data: {
+            labels: labelsMois,
+            datasets: [{
+              label: "kg CO2e économisés",
+              data: donneesMois
+            }]
+          }
+        });
+
+        if (graphiqueProduit) graphiqueProduit.destroy();
+        graphiqueProduit = new Chart(document.getElementById("graphiqueProduit"), {
+          type: "pie",
+          data: {
+            labels: labelsProduits,
+            datasets: [{
+              label: "kg CO2e économisés",
+              data: donneesProduits
+            }]
+          }
+        });
+      }
+
+      async function chargerRapportMensuel() {
+        const mois = document.getElementById("moisRapport").value;
+        const url = mois
+          ? `${API_BASE_URL}/co2/rapport-mensuel?mois=${mois}`
+          : `${API_BASE_URL}/co2/rapport-mensuel`;
+
+        const reponse = await fetch(url);
+        const data = await reponse.json();
+        document.getElementById("rapportMensuel").textContent = data.rapport;
+      }
+
+      chargerStatistiquesCO2();
+      chargerRapportMensuel();
+    </script>
+  </body>
+</html>
