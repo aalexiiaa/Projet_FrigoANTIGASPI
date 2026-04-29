@@ -75,7 +75,7 @@ def get_products():
             "id":              p.id,
             "nom":             p.nom,
             "quantite":        p.quantite,
-            "date_peremption": p.date_expiration.strftime("%Y-%m-%d")
+            "date_expiration": p.date_expiration.strftime("%Y-%m-%d")
         }
         analyser_produit(produit_dict)
         resultat.append(produit_dict)
@@ -113,14 +113,14 @@ def delete_product(id):
         return jsonify({"error": "Produit introuvable"}), 404
 
     # on garde une trace dans l'historique avant de supprimer
- historique = HistoriqueProduit(
-        produit_id=produit.id,
-        nom=produit.nom,
-        quantite=produit.quantite,
-        date_expiration=produit.date_expiration,
-        co2_economise_kg=calculer_co2_economise(produit.nom, produit.quantite)
+    historique = HistoriqueProduit(
+            produit_id=produit.id,
+            nom=produit.nom,
+            quantite=produit.quantite,
+            date_expiration=produit.date_expiration,
+            co2_economise_kg=calculer_co2_economise(produit.nom, produit.quantite)
     )
-    )
+    
     db.session.add(historique)
 
     db.session.delete(produit)
