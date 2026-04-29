@@ -128,7 +128,13 @@ def delete_product(id):
         return jsonify({"error": "Produit introuvable"}), 404
 
     # on garde une trace dans l'historique avant de supprimer
-    historique = HistoriqueProduit(produit_id=produit.id, nom=produit.nom)
+    historique = HistoriqueProduit(
+    produit_id=produit.id,
+    nom=produit.nom,
+    quantite=produit.quantite,
+    date_expiration=produit.date_expiration,
+    co2_economise_kg=calculer_co2_economise(produit.nom, produit.quantite)
+    )
     db.session.add(historique)
 
     db.session.delete(produit)
