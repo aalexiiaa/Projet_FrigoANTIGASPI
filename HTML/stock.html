@@ -35,6 +35,17 @@
     </div>
 
     <script>
+      //verifier si log in
+        if(!localStorage.getItem("token")){
+            window.location.href="login.html";
+        }
+
+        //verifier si admin
+        if(localStorage.getItem("role")!=="admin"){
+            alert("Accès permis seulement à l'utilisateur");
+            window.location.href="login.html";
+        }
+
       function chProduit(){
         fetch("http://localhost:5000/api/produits")
         .then(res=>res.json())
@@ -51,8 +62,7 @@
 
             div.innerHTML=`
               <h3>${p.nom}</h3>
-              <p>${p.jours_restants} jours restants </p>
-              <p>Expiration: ${p.date_expiration}</p>
+              <p>Expiration: ${p.date_peremption}</p>
             `;
             container.appendChild(div);
           })
@@ -64,16 +74,7 @@
       }
       chProduit();
 
-      //verifier si log in
-        if(!localStorage.getItem("token")){
-            window.location.href="login.html";
-        }
-
-        //verifier si admin
-        if(localStorage.getItem("role")!=="admin"){
-            alert("Accès permis seulement à l'utilisateur");
-            window.location.href="login.html";
-        }
+      
 
         //button logout
         function logout(){
