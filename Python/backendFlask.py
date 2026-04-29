@@ -35,14 +35,15 @@ class Produit(db.Model):
     quantite        = db.Column(db.Integer)
     date_expiration = db.Column(db.Date)
 
-
 class HistoriqueProduit(db.Model):
     __tablename__ = "historique_produits"
-    id          = db.Column(db.Integer, primary_key=True)
-    produit_id  = db.Column(db.Integer, db.ForeignKey("produits.id", ondelete="SET NULL"))
-    nom         = db.Column(db.String(100))
-    consomme_le = db.Column(db.Date, default=date.today)
-
+    id                 = db.Column(db.Integer, primary_key=True)
+    produit_id         = db.Column(db.Integer, db.ForeignKey("produits.id", ondelete="SET NULL"))
+    nom                = db.Column(db.String(100))
+    quantite           = db.Column(db.Integer)
+    date_expiration    = db.Column(db.Date)
+    consomme_le        = db.Column(db.Date, default=date.today)
+    co2_economise_kg   = db.Column(db.Float)
 
 # Fonction utilitaire : calcul du statut d'un produit 
 
