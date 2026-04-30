@@ -17,6 +17,7 @@
       </div>
       <hr>
     </header>
+    <!--navigation entre les pages-->
     <div class="formulaire-login">
       <h1>Ajouter un produit</h1>
       <label>Nom du produit</label>
@@ -29,12 +30,16 @@
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
     <script>
+      //verif si utilisateur est connecte
+      //si aucun token, redirection vers login
       if (!localStorage.getItem("token")) window.location.href = "login.html";
+      //seuls les admins peuvent acceder
       if (localStorage.getItem("role") !== "admin") {
         alert("Accès refusé");
         window.location.href = "login.html";
       }
       function logout() {
+        //suppression des données stockés, redirection vers login
         localStorage.removeItem("token");
         localStorage.removeItem("role");
         window.location.href = "login.html";
@@ -46,9 +51,11 @@
           alert("Il faut compléter tous les champs !");
           return;
         }
+        //envoi backend
         fetch("https://frigo-backend-u4vk.onrender.com/api/produits", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          //donnees envoye serveur
           body: JSON.stringify({ nom, quantite: 1, date_peremption: date })
         })
         .then(res => res.json())
