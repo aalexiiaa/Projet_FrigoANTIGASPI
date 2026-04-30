@@ -8,6 +8,7 @@
   <body>
     <div class="formulaire-login">
       <div class="divLogo">
+        <!--Logo de l'application-->
         <img src="../images/fridge.png" alt="Logo site" class="logo">
       </div>
       <h1>Frigo Anti-Gaspi</h1>
@@ -22,6 +23,7 @@
         <button type="button" onclick="logIn()">Login</button>
         <br><br>
         <a href="signin.html">Pas encore de compte ? S'inscrire</a>
+        <!--Message d'erreur-->
         <p class="errorMessage" id="errorMsg" style="display:none;">Email ou mot de passe incorrect</p>
       </form>
     </div>
@@ -29,24 +31,33 @@
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
     <script>
+      //fonction lors du clic sur bouton Login
       function logIn() {
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
+        //verification si les champs sont remplis
         if (!email || !password) {
           document.getElementById("errorMsg").textContent = "Veuillez remplir tous les champs.";
           document.getElementById("errorMsg").style.display = "block";
           return;
         }
+        //Envoi requete HTTP au backend avec fetch
         fetch("https://frigo-backend-u4vk.onrender.com/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, mot_de_passe: password })
+          method: "POST", //methode HTTP pour envoyer des données
+          headers: { "Content-Type": "application/json" }, //on envoie du JSON
+          //conversion données JS en JSON
+          body: JSON.stringify({ email, mot_de_passe: password })  //doit correspondre au backend
         })
+          //transformation de la reponse en JSON
         .then(res => res.json())
         .then(data => {
+          //si token recu, connexion reusite
           if (data.token) {
+            //stockage du tocken dans navigateur
             localStorage.setItem("token", data.token);
+            //stockage du role
             localStorage.setItem("role", data.role);
+            //redirection vers page accueil
             window.location.href = "accueil.html";
           } else {
             document.getElementById("errorMsg").textContent = data.error || "Email ou mot de passe incorrect";
@@ -54,6 +65,7 @@
           }
         })
         .catch(() => {
+          //erreur si serveur inaccessible
           document.getElementById("errorMsg").textContent = "Impossible de contacter le serveur.";
           document.getElementById("errorMsg").style.display = "block";
         });
