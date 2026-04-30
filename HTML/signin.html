@@ -31,6 +31,7 @@
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
     <script>
+      //fonction lors du clic sur s'inscrire
       function registrationUser() {
         const donnee = document.querySelectorAll("input");
         const nom = donnee[0].value;
@@ -47,13 +48,16 @@
           document.getElementById("errorMsg").style.display = "block";
           return;
         }
+        //envoi des donnee au serveur
         fetch("https://frigo-backend-u4vk.onrender.com/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          //conversion en JSON
           body: JSON.stringify({ nom, email, mot_de_passe: password }),
         })
         .then(res => res.json())
         .then(data => {
+          //si backend retourne un message, succes
           if (data.message) {
             alert("Compte créé avec succès!");
             window.location.href = "login.html";
@@ -63,6 +67,7 @@
           }
         })
         .catch(() => {
+          //erreur serveur
           document.getElementById("errorMsg").textContent = "Impossible de contacter le serveur.";
           document.getElementById("errorMsg").style.display = "block";
         });
