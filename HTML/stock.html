@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Accueil Frigo Anti-Gaspi</title>
+    <title>Stock - Frigo Anti-Gaspi</title>
     <link rel="stylesheet" href="../CSS/styleControlPanel.css" />
   </head>
   <body>
@@ -10,86 +10,50 @@
       <hr>
       <h2 align="center">MOINS DE GASPILLAGE, PLUS DE CONTROLE</h2>
       <p align="center">Gardez une trace de vos aliments, evitez le gaspillage et agissez pour la planete.</p>
- 
-        <div class="button-container">
-        <a href="accueil.html" id="b1" class="active">
-            <button style="padding: 5px 10px; font-size: 16px;" id="f1">Accueil</button>
-        </a>
-        <a href="stock.html" id="b2">
-            <button style="padding: 5px 10px; font-size: 16px;" id="f2">Stock</button>
-        </a>
-        <a href="ajouter.html" id="b3">
-            <button style="padding: 5px 10px; font-size: 16px;" id="f3">Ajouter</button>
-        </a>
-        <a href="login.html" id="b4">
-            <button  onclick="logout()" style="padding: 5px 10px; font-size: 16px;" id="f4">Logout</button>
-        </a>
+      <div class="button-container">
+        <a href="accueil.html"><button style="padding: 5px 10px; font-size: 16px;">Accueil</button></a>
+        <a href="stock.html"><button style="padding: 5px 10px; font-size: 16px;">Stock</button></a>
+        <a href="ajouter.html"><button style="padding: 5px 10px; font-size: 16px;">Ajouter</button></a>
+        <a href="login.html"><button onclick="logout()" style="padding: 5px 10px; font-size: 16px;">Logout</button></a>
       </div>
       <hr>
     </header>
-    
     <div class="contenuPrincipal">
       <h1>Stock</h1>
-
       <div id="listeProduits"></div>
     </div>
-
-    <script>
-      //verifier si log in
-        if(!localStorage.getItem("token")){
-            window.location.href="login.html";
-        }
-
-        //verifier si admin
-        if(localStorage.getItem("role")!=="admin"){
-            alert("Accès permis seulement à l'utilisateur");
-            window.location.href="login.html";
-        }
-
-      function chProduit(){
-        fetch("http://localhost:5000/api/produits")
-        .then(res=>res.json())
-        .then(produits=>{
-          const container=document.getElementById("listeProduits");
-          container.innerHTML="";
-          produits.forEach(p=>{
-            const div=document.createElement("div");
-
-            //couleurs
-            if (p.statut==="rouge") div.className="product Red";
-            else if (p.statut==="jaune") div.className="product Orange";
-            else div.className="product Green";
-
-            div.innerHTML=`
-              <h3>${p.nom}</h3>
-              <p>Expiration: ${p.date_peremption}</p>
-            `;
-            container.appendChild(div);
-          })
-        })
-        .catch(err=>{
-          console.error(err);
-          alert("Erreur dans le chargement des produits");
-        })
-      }
-      chProduit();
-
-      
-
-        //button logout
-        function logout(){
-          localStorage.removeItem("token");
-          localStorage.removeItem("role");
-          window.location.href="login.html";
-        }
-    </script>
-
-
-
     <footer style="text-align: center;">
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
-      
-    </div>
+    <script>
+      if (!localStorage.getItem("token")) window.location.href = "login.html";
+      if (localStorage.getItem("role") !== "admin") {
+        alert("Accès refusé");
+        window.location.href = "login.html";
+      }
+      function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        window.location.href = "login.html";
+      }
+      function chProduit() {
+        fetch("https://frigo-backend-u4vk.onrender.com/api/produits")
+        .then(res => res.json())
+        .then(produits => {
+          const container = document.getElementById("listeProduits");
+          container.innerHTML = "";
+          produits.forEach(p => {
+            const div = document.createElement("div");
+            if (p.statut === "rouge") div.className = "product Red";
+            else if (p.statut === "jaune") div.className = "product Orange";
+            else div.className = "product Green";
+            div.innerHTML = `<h3>${p.nom}</h3><p>Expiration: ${p.date_peremption}</p>`;
+            container.appendChild(div);
+          });
+        })
+        .catch(() => alert("Erreur lors du chargement des produits."));
+      }
+      chProduit();
+    </script>
   </body>
 </html>
