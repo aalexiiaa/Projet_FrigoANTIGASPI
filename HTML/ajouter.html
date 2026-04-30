@@ -2,98 +2,63 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Accueil Frigo Anti-Gaspi</title>
+    <title>Ajouter - Frigo Anti-Gaspi</title>
     <link rel="stylesheet" href="../CSS/styleControlPanel.css" />
   </head>
   <body>
     <header style="background-color: cadetblue;">
       <h2 align="center">MOINS DE GASPILLAGE, PLUS DE CONTROLE</h2>
       <p align="center">Gardez une trace de vos aliments, evitez le gaspillage et agissez pour la planete.</p>
-    
-        <!--creer la liste de menu, ou grace aux liens, on peut acceder directement encliquant sur la zone de texte correspondante-->
       <div class="button-container">
-                <a href="accueil.html" id="b1" class="active">
-                    <button style="padding: 5px 10px; font-size: 16px;" id="f1">Accueil</button>
-                </a>
-                <a href="stock.html" id="b2">
-                    <button style="padding: 5px 10px; font-size: 16px;" id="f2">Stock</button>
-                </a>
-                <a href="ajouter.html" id="b3">
-                    <button style="padding: 5px 10px; font-size: 16px;" id="f3">Ajouter</button>
-                </a>
-                <a href="login.html" id="b4">
-                    <button onclick="logout()" style="padding: 5px 10px; font-size: 16px;" id="f4">Logout</button>
-                </a>
-       </div>
-       <hr>
-      </header>
-
-    
+        <a href="accueil.html"><button style="padding: 5px 10px; font-size: 16px;">Accueil</button></a>
+        <a href="stock.html"><button style="padding: 5px 10px; font-size: 16px;">Stock</button></a>
+        <a href="ajouter.html"><button style="padding: 5px 10px; font-size: 16px;">Ajouter</button></a>
+        <a href="login.html"><button onclick="logout()" style="padding: 5px 10px; font-size: 16px;">Logout</button></a>
+      </div>
+      <hr>
+    </header>
     <div class="formulaire-login">
       <h1>Ajouter un produit</h1>
       <label>Nom du produit</label>
       <input id="nom" type="text" placeholder="ex: pain">
-
       <label>Date de péremption</label>
       <input id="date" type="date">
-
       <button onclick="ajouterProduit()">Ajouter</button>
     </div>
-    
     <footer style="text-align: center;">
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
-      
-    </div>
-
     <script>
-      function ajouterProduit(){
-        const nom=document.getElementById("nom").value
-        const date=document.getElementById("date").value
-        if (!nom || !date){
-          alert("Il faut completer tous les champs !")
+      if (!localStorage.getItem("token")) window.location.href = "login.html";
+      if (localStorage.getItem("role") !== "admin") {
+        alert("Accès refusé");
+        window.location.href = "login.html";
+      }
+      function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        window.location.href = "login.html";
+      }
+      function ajouterProduit() {
+        const nom = document.getElementById("nom").value;
+        const date = document.getElementById("date").value;
+        if (!nom || !date) {
+          alert("Il faut compléter tous les champs !");
           return;
         }
-
-        fetch("http://localhost:5000/api/produits", {
+        fetch("https://frigo-backend-u4vk.onrender.com/api/produits", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            nom: nom,
-            quantite:1,
-            date_peremption: date
-          })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nom, quantite: 1, date_peremption: date })
         })
-        .then(res=> res.json())
-        .then(data=> {
-          alert("Le produit a été ajouté avec succés!")
+        .then(res => res.json())
+        .then(() => {
+          alert("Produit ajouté avec succès!");
+          document.getElementById("nom").value = "";
+          document.getElementById("date").value = "";
         })
-        .catch(err=> {
-          console.error(err);
-          alert("Erreur");
-        });
+        .catch(() => alert("Erreur lors de l'ajout."));
       }
-
-      //verifier si log in
-        if(!localStorage.getItem("token")){
-            window.location.href="login.html";
-        }
-
-        //verifier si admin
-        if(localStorage.getItem("role")!=="admin"){
-            alert("Accès permis seulement à l'utilisateur");
-            window.location.href="login.html";
-        }
-
-        //button logout
-        function logout(){
-          localStorage.removeItem("token");
-          localStorage.removeItem("role");
-          window.location.href="login.html";
-        }
     </script>
-    
   </body>
 </html>
