@@ -7,67 +7,60 @@
   </head>
   <body>
     <div class="formulaire-login">
-      <!--Logo-->
       <div class="divLogo">
         <img src="../images/fridge.png" alt="Logo site" class="logo">
       </div>
       <h1>Frigo Anti-Gaspi</h1>
       <p class="WelcomeMessage">Connectez-vous à votre compte</p>
       <hr />
-      <!--formulaire pour se connecter-->
       <form>
-        <label>Email </label>
-        <input type="email" placeholder="Email" required />
+        <label>Email</label>
+        <input type="email" id="email" placeholder="Email" required />
         <label>Mot de passe</label>
-        <input type="password" placeholder="Mot de passe" required />
-        <br>
-        <br>
-        <button type="button" onclick="logIn()" style="padding: 5px 10px; font-size: 16px;" id="f5">Login</button>
-        <br>
-        <br>
-        <a href="signin.html">Sign in</a>
-        <!--verifier si le mail et mot de passe sont correctes-->
-        <p class="errorMessage">Email ou mot de passe incorrect</p>
+        <input type="password" id="password" placeholder="Mot de passe" required />
+        <br><br>
+        <button type="button" onclick="logIn()">Login</button>
+        <br><br>
+        <a href="signin.html">Pas encore de compte ? S'inscrire</a>
+        <p class="errorMessage" id="errorMsg" style="display:none;">Email ou mot de passe incorrect</p>
       </form>
     </div>
     <footer>
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
-      
-    </div>
 
     <script>
-      function logIn(){
-        const email=document.querySelector('input[type="email"]').value;
-        const password=document.querySelector('input[type="password"]').value;
+      function logIn() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        if (!email || !password) {
+          document.getElementById("errorMsg").textContent = "Veuillez remplir tous les champs.";
+          document.getElementById("errorMsg").style.display = "block";
+          return;
+        }
 
         fetch("http://localhost:5000/api/auth/login", {
-          method:"POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body:JSON.stringify({
-            email:email,
-            mot_de_passe:password
-          })
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, mot_de_passe: password })
         })
-        .then(res=> res.json())
-        .then(data=> {
-          if(data.token){
-            //on sauvegarde token
+        .then(res => res.json())
+        .then(data => {
+          if (data.token) {
             localStorage.setItem("token", data.token);
             localStorage.setItem("role", data.role);
-            window.location.href="accueil.html";
+            window.location.href = "accueil.html";
           } else {
-            document.querySelector(".errorMessage").style.display="block";
+            document.getElementById("errorMsg").textContent = data.error || "Email ou mot de passe incorrect";
+            document.getElementById("errorMsg").style.display = "block";
           }
         })
+        .catch(() => {
+          document.getElementById("errorMsg").textContent = "Impossible de contacter le serveur. Vérifiez que le serveur est démarré.";
+          document.getElementById("errorMsg").style.display = "block";
+        });
       }
-
-
     </script>
-    
-
-
   </body>
 </html>
