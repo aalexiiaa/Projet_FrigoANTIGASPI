@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "postgresql+pg8000://neondb_owner:npg_BVJg5YLyet1o@ep-raspy-sea-ab7gmqpt.eu-west-2.aws.neon.tech/neondb?ssl=true"
+    "postgresql+pg8000://neondb_owner:npg_BVJg5YLyet1o@ep-raspy-sea-ab7gmqpt.eu-west-2.aws.neon.tech/neondb"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["JWT_SECRET_KEY"] = "cle-secrete-frigo"
