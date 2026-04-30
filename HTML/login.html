@@ -28,19 +28,16 @@
     <footer>
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
-
     <script>
       function logIn() {
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
-
         if (!email || !password) {
           document.getElementById("errorMsg").textContent = "Veuillez remplir tous les champs.";
           document.getElementById("errorMsg").style.display = "block";
           return;
         }
-
-        fetch("http://localhost:5000/api/auth/login", {
+        fetch("https://frigo-backend-u4vk.onrender.com/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, mot_de_passe: password })
@@ -57,7 +54,7 @@
           }
         })
         .catch(() => {
-          document.getElementById("errorMsg").textContent = "Impossible de contacter le serveur. Vérifiez que le serveur est démarré.";
+          document.getElementById("errorMsg").textContent = "Impossible de contacter le serveur.";
           document.getElementById("errorMsg").style.display = "block";
         });
       }
