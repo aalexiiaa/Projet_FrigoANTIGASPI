@@ -30,7 +30,6 @@
     <footer>
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
-
     <script>
       function registrationUser() {
         const donnee = document.querySelectorAll("input");
@@ -38,20 +37,17 @@
         const email = donnee[1].value;
         const password = donnee[2].value;
         const confirmPassword = donnee[3].value;
-
         if (!nom || !email || !password) {
           document.getElementById("errorMsg").textContent = "Veuillez remplir tous les champs.";
           document.getElementById("errorMsg").style.display = "block";
           return;
         }
-
         if (password !== confirmPassword) {
           document.getElementById("errorMsg").textContent = "Les mots de passe ne correspondent pas!";
           document.getElementById("errorMsg").style.display = "block";
           return;
         }
-
-        fetch("http://localhost:5000/api/auth/register", {
+        fetch("https://frigo-backend-u4vk.onrender.com/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ nom, email, mot_de_passe: password }),
