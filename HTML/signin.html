@@ -21,14 +21,10 @@
         <label>Mot de passe</label>
         <input type="password" placeholder="Mot de passe" required /><br />
         <label>Confirmez le mot de passe</label>
-        <input
-          type="password"
-          placeholder="Confirmez votre mot de passe"
-          required
-        />
+        <input type="password" placeholder="Confirmez votre mot de passe" required />
         <br />
         <button type="button" onclick="registrationUser()">S'inscrire</button>
-        <p class="errorMessage">Une erreur est survenue, veuillez réessayer.</p>
+        <p class="errorMessage" id="errorMsg" style="display:none;">Une erreur est survenue.</p>
       </form>
     </div>
     <footer>
@@ -42,30 +38,38 @@
         const email = donnee[1].value;
         const password = donnee[2].value;
         const confirmPassword = donnee[3].value;
+
+        if (!nom || !email || !password) {
+          document.getElementById("errorMsg").textContent = "Veuillez remplir tous les champs.";
+          document.getElementById("errorMsg").style.display = "block";
+          return;
+        }
+
         if (password !== confirmPassword) {
-          alert("Les mots de passe ne correspondent pas!");
+          document.getElementById("errorMsg").textContent = "Les mots de passe ne correspondent pas!";
+          document.getElementById("errorMsg").style.display = "block";
           return;
         }
 
         fetch("http://localhost:5000/api/auth/register", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nom: nom,
-            email: email,
-            mot_de_passe: password,
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nom, email, mot_de_passe: password }),
         })
-          .then(() => {
-            alert("Compte crée!!");
+        .then(res => res.json())
+        .then(data => {
+          if (data.message) {
+            alert("Compte créé avec succès!");
             window.location.href = "login.html";
-          })
-          .catch((err) => {
-            console.error(err);
-            alert("Erreur");
-          });
+          } else {
+            document.getElementById("errorMsg").textContent = data.error || "Une erreur est survenue.";
+            document.getElementById("errorMsg").style.display = "block";
+          }
+        })
+        .catch(() => {
+          document.getElementById("errorMsg").textContent = "Impossible de contacter le serveur.";
+          document.getElementById("errorMsg").style.display = "block";
+        });
       }
     </script>
   </body>
