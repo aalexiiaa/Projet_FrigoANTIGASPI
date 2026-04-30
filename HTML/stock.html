@@ -20,13 +20,16 @@
     </header>
     <div class="contenuPrincipal">
       <h1>Stock</h1>
+      <!--les produits son tstockées dynamiquement dasn le conteneur-->
       <div id="listeProduits"></div>
     </div>
     <footer style="text-align: center;">
       <p>&copy; Frigo Anti-Gaspi</p>
     </footer>
     <script>
+      //verif si utilisateur connecte
       if (!localStorage.getItem("token")) window.location.href = "login.html";
+      //verif du role
       if (localStorage.getItem("role") !== "admin") {
         alert("Accès refusé");
         window.location.href = "login.html";
@@ -36,23 +39,30 @@
         localStorage.removeItem("role");
         window.location.href = "login.html";
       }
+      //fonction pour charger les produits depuis le backend
       function chProduit() {
         fetch("https://frigo-backend-u4vk.onrender.com/api/produits")
         .then(res => res.json())
         .then(produits => {
+          //recuperation conteneur HTML
           const container = document.getElementById("listeProduits");
+          //on vide le contenu avant de recharger
           container.innerHTML = "";
           produits.forEach(p => {
             const div = document.createElement("div");
+            //atribution d'une classe selon le statut
             if (p.statut === "rouge") div.className = "product Red";
             else if (p.statut === "jaune") div.className = "product Orange";
             else div.className = "product Green";
+            //insertion contenu HTML
             div.innerHTML = `<h3>${p.nom}</h3><p>Expiration: ${p.date_peremption}</p>`;
+            //ajout dans DOM
             container.appendChild(div);
           });
         })
         .catch(() => alert("Erreur lors du chargement des produits."));
       }
+      //apel fonction au chargement de la page
       chProduit();
     </script>
   </body>
